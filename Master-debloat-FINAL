@@ -134,6 +134,103 @@ winget install --id 9MSMLRH6LZF3 --accept-source-agreements --silent --accept-pa
 
 # Disable telemetry
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Value 0
+# Telemetry Disabling Actions
+
+# Set Registry Values to Disable Telemetry
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Value 0
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "DisableEnterpriseAuthProxy" -Value 1
+
+# Disable Data Collection Services
+$services = @(
+    "DcpSvc", 
+    "DmEnrollmentSvc", 
+    "Eaphost", 
+    "lfsvc", 
+    "MapsBroker", 
+    "NetSetupSvc", 
+    "PimIndexMaintenanceSvc", 
+    "SensorDataService", 
+    "SensorService", 
+    "SensrSvc", 
+    "SharedAccess", 
+    "StorSvc", 
+    "TieringEngineService", 
+    "UevAgentService", 
+    "UnistoreSvc", 
+    "UserDataSvc", 
+    "WbioSrvc", 
+    "WdiServiceHost", 
+    "WdiSystemHost", 
+    "WinHttpAutoProxySvc", 
+    "wisvc", 
+    "wscsvc", 
+    "WSearch", 
+    "wuauserv"
+)
+
+foreach ($service in $services) {
+    Stop-Service -Name $service -ErrorAction SilentlyContinue
+    Set-Service -Name $service -StartupType Disabled -ErrorAction SilentlyContinue
+}
+# Telemetry Disabling Actions
+
+# Set Registry Values to Disable Telemetry
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Value 0
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "DisableEnterpriseAuthProxy" -Value 1
+
+# Add Telemetry Domains to Hosts File to Block Them
+
+$hostsPath = "C:\Windows\System32\drivers\etc\hosts"
+$telemetryDomains = @(
+    "0.0.0.0 a-0001.a-msedge.net",
+    "0.0.0.0 a-0002.a-msedge.net",
+    "0.0.0.0 a-0003.a-msedge.net",
+    "0.0.0.0 a-0004.a-msedge.net",
+    "0.0.0.0 a-0005.a-msedge.net",
+    "0.0.0.0 a-0006.a-msedge.net",
+    "0.0.0.0 a-0007.a-msedge.net",
+    "0.0.0.0 a-0008.a-msedge.net",
+    "0.0.0.0 a-0009.a-msedge.net",
+    "0.0.0.0 choice.microsoft.com",
+    "0.0.0.0 choice.microsoft.com.nsatc.net",
+    "0.0.0.0 df.telemetry.microsoft.com",
+    "0.0.0.0 diagnostics.support.microsoft.com",
+    "0.0.0.0 fe2.update.microsoft.com.akadns.net",
+    "0.0.0.0 feedback.microsoft-hohm.com",
+    "0.0.0.0 feedback.search.microsoft.com",
+    "0.0.0.0 feedback.windows.com",
+    "0.0.0.0 i1.services.social.microsoft.com",
+    "0.0.0.0 i1.services.social.microsoft.com.nsatc.net",
+    "0.0.0.0 oca.telemetry.microsoft.com",
+    "0.0.0.0 oca.telemetry.microsoft.com.nsatc.net",
+    "0.0.0.0 pre.footprintpredict.com",
+    "0.0.0.0 redir.metaservices.microsoft.com",
+    "0.0.0.0 reports.wes.df.telemetry.microsoft.com",
+    "0.0.0.0 services.wes.df.telemetry.microsoft.com",
+    "0.0.0.0 settings-sandbox.data.microsoft.com",
+    "0.0.0.0 settings-win.data.microsoft.com",
+    "0.0.0.0 sqm.df.telemetry.microsoft.com",
+    "0.0.0.0 sqm.telemetry.microsoft.com",
+    "0.0.0.0 sqm.telemetry.microsoft.com.nsatc.net",
+    "0.0.0.0 telecommand.telemetry.microsoft.com",
+    "0.0.0.0 telecommand.telemetry.microsoft.com.nsatc.net",
+    "0.0.0.0 telemetry.appex.bing.net",
+    "0.0.0.0 telemetry.microsoft.com",
+    "0.0.0.0 telemetry.urs.microsoft.com",
+    "0.0.0.0 vortex.data.microsoft.com",
+    "0.0.0.0 vortex-sandbox.data.microsoft.com",
+    "0.0.0.0 vortex-win.data.microsoft.com",
+    "0.0.0.0 watson.live.com",
+    "0.0.0.0 watson.microsoft.com",
+    "0.0.0.0 watson.ppe.telemetry.microsoft.com",
+    "0.0.0.0 wes.df.telemetry.microsoft.com"
+)
+
+foreach ($domain in $telemetryDomains) {
+    Add-Content -Path $hostsPath -Value $domain -Force
+}
+
+
 
 # Disable Wi-Fi Sense
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WcmSvc\wifinetworkmanager\config" -Name "AutoConnectAllowedOEM" -Value 0
