@@ -36,7 +36,6 @@ $apps = @(
     "Microsoft.WindowsAlarms",
     "Microsoft.WindowsCalculator",
     "Microsoft.WindowsFeedbackHub",
-    "Microsoft.WindowsStore",
     "Microsoft.XboxApp",
     "Microsoft.ZuneMusic",
     "Microsoft.ZuneVideo",
