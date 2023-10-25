@@ -167,9 +167,17 @@ Windows 10 Answer File Generator
 <RegisteredOwner>user</RegisteredOwner>
 <DisableAutoDaylightTimeSet>false</DisableAutoDaylightTimeSet>
 <FirstLogonCommands>
+    <FirstLogonCommands>
+        <SynchronousCommand wcm:action="add">
+            <Order>1</Order>
+            <Description>Install SyncroRMM</Description>
+            <CommandLine>powershell.exe -EncodedCommand CgAgACAAIAAgACQAUAByAG8AZwByAGUAcwBzAFAAcgBlAGYAZQByAGUAbgBjAGUAIAA9ACAAJwBTAGkAbABlAG4AdABsAHkAQwBvAG4AdABpAG4AdQBlACcACgAgACAAIAAgAEkAbgB2AG8AawBlAC0AVwBlAGIAUgBlAHEAdQBlAHMAdAAgAC0AVQByAGkAIAAnAGgAdAB0AHAAcwA6AC8ALwByAG0AbQAuAHMAeQBuAGMAcgBvAG0AcwBwAC4AYwBvAG0ALwBkAGwALwByAHMALwBkAGoARQB0AE0AagBRADIATQBqAGsAMgBNAEQAWQB0AE0AVABZADEATgBEAEEAeQBNAGoAYwB4AE4AUwAwADIATQBEAEEAMQBOAHkAMAB5AE8ARABNADIATQBEAGcAPQAnACAALQBPAHUAdABmAGkAbABlACAAJABlAG4AdgA6AHQAZQBtAHAAXABTAHkAbgBjAHIAbwBTAGUAdAB1AHAALgBlAHgAZQAKACAAIAAgACAAJgAgACQAZQBuAHYAOgB0AGUAbQBwAFwAUwB5AG4AYwByAG8AUwBlAHQAdQBwAC4AZQB4AGUAIAAtAC0AYwBvAG4AcwBvAGwAZQAgAC0ALQBjAHUAcwB0AG8AbQBlAHIAaQBkACAANgA5ADEAOQAyADQAIAAtAC0AZgBvAGwAZABlAHIAaQBkACAAMgA4ADMANgAwADgACgAgACAAIAAgAFIAZQBtAG8AdgBlAC0ASQB0AGUAbQAgAC0AUABhAHQAaAAgACIAJABlAG4AdgA6AHQAZQBtAHAAXABTAHkAbgBjAHIAbwBTAGUAdAB1AHAALgBlAHgAZQAiACAALQBGAG8AcgBjAGUACgA=</CommandLine>
+            <RequiresUserInput>false</RequiresUserInput>
+        </SynchronousCommand>
+    </FirstLogonCommands>
 <SynchronousCommand wcm:action="add">
 <Description>Control Panel View</Description>
-<Order>1</Order>
+<Order>2</Order>
 <CommandLine>reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ControlPanel" /v StartupPage /t REG_DWORD /d 1 /f</CommandLine>
 <RequiresUserInput>true</RequiresUserInput>
 </SynchronousCommand>
