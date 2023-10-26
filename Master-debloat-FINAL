@@ -55,6 +55,33 @@ $apps = @(
 
 # stuff added from other script
 
+# Disable background apps
+Get-AppxPackage | foreach {if (!($_.IsFramework -or $_.PublisherId -eq "cw5n1h2txyewy")) {$_ | Remove-AppxPackage}}
+
+# Disable Cortana
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name "AllowCortana" -Value 0
+
+# Disable delivery optimization
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization" -Name "DODownloadMode" -Value 100
+
+# Disable error reporting
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name "Disabled" -Value 1
+
+# Disable feedback
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "DoNotShowFeedbackNotifications" -Value 1
+
+# Disable game DVR and Game Bar
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\GameDVR" -Name "AllowGameDVR" -Value 0
+
+# Disable telemetry and data collection
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Value 0
+
+# Disable Wi-Fi Sense
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WcmSvc\wifinetworkmanager\config" -Name "AutoConnectAllowedOEM" -Value 0
+
+# Unpin items from Start
+(New-Object -Com Shell.Application).NameSpace('shell:::{4234d49b-0245-4df3-b780-3893943456e1}').Items() | ForEach { $_.Verbs() | Where-Object { $_.Name -match 'Unpin from Start' } | ForEach { $_.DoIt() } }
+
 
 Get-ChildItem -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -match 'placeholdertilecollection' } | ForEach-Object { Remove-Item $_.PSPath -Recurse -ErrorAction SilentlyContinue }
 
