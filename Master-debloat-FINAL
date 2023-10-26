@@ -245,6 +245,16 @@ foreach ($service in $servicesToDisable) {
     }
 }
 
+# Disable Telemetry
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Value 0
+
+# Disable WiFi Sense
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WcmSvc\wifinetworkmanager\config" -Name "AutoConnectAllowedOEM" -Value 0
+
+# Disable other services
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Siuf\Rules" -Name "NumberOfSIUFInPeriod" -Value 0
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Siuf\Rules" -Name "PeriodInNanoSeconds" -Value 0
+
 # Disable additional scheduled tasks
 $tasksToDisable = @(
     "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser",
