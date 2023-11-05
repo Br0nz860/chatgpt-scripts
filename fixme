@@ -174,7 +174,6 @@ $services = @(
     "Eaphost", 
     "lfsvc", 
     "MapsBroker", 
-    "NetSetupSvc", 
     "PimIndexMaintenanceSvc", 
     "SensorDataService", 
     "SensorService", 
@@ -190,10 +189,7 @@ $services = @(
     "WdiSystemHost", 
     "WinHttpAutoProxySvc", 
     "wisvc", 
-    "wscsvc", 
-    "WSearch", 
-    "wuauserv"
-)
+    )
 
 foreach ($service in $services) {
     Stop-Service -Name $service -ErrorAction SilentlyContinue
@@ -258,20 +254,6 @@ foreach ($domain in $telemetryDomains) {
     Add-Content -Path $hostsPath -Value $domain -Force
 }
 
-# Disable additional services
-$servicesToDisable = @(
-    "WaaSMedicSvc", # Windows Update Medic Service
-    "wscsvc"       # Windows Security Center Service
-)
-
-foreach ($service in $servicesToDisable) {
-    try {
-        Set-Service -Name $service -StartupType Disabled -ErrorAction Stop
-        Stop-Service -Name $service -Force -ErrorAction Stop
-    } catch {
-        Write-Warning "Failed to disable and stop $service"
-    }
-}
 
 # Disable Telemetry
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Value 0
@@ -285,9 +267,6 @@ Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Siuf\Rules" -Name "PeriodInNano
 
 # Disable additional scheduled tasks
 $tasksToDisable = @(
-    "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser",
-    "\Microsoft\Windows\Application Experience\ProgramDataUpdater",
-    "\Microsoft\Windows\Application Experience\StartupAppTask",
     "\Microsoft\Windows\Autochk\Proxy",
     "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator",
     "\Microsoft\Windows\Customer Experience Improvement Program\KernelCeipTask",
@@ -308,26 +287,10 @@ foreach ($task in $tasksToDisable) {
 }
 
 
-# Disable additional services
-$servicesToDisable = @(
-    "WaaSMedicSvc", # Windows Update Medic Service
-    "wscsvc"       # Windows Security Center Service
-)
 
-foreach ($service in $servicesToDisable) {
-    try {
-        Set-Service -Name $service -StartupType Disabled -ErrorAction Stop
-        Stop-Service -Name $service -Force -ErrorAction Stop
-    } catch {
-        Write-Warning "Failed to disable and stop $service"
-    }
-}
 
 # Disable additional scheduled tasks
 $tasksToDisable = @(
-    "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser",
-    "\Microsoft\Windows\Application Experience\ProgramDataUpdater",
-    "\Microsoft\Windows\Application Experience\StartupAppTask",
     "\Microsoft\Windows\Autochk\Proxy",
     "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator",
     "\Microsoft\Windows\Customer Experience Improvement Program\KernelCeipTask",
