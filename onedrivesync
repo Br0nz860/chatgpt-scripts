@@ -1,3 +1,4 @@
+Import-Module $env:SyncroModule
 $Source = @"
 using System;  
 using System.Runtime.InteropServices;
@@ -288,4 +289,19 @@ foreach ($ODStat in $ODStatus) {
 }
 if (!$ODerrors) {
     $ODerrors = "Healthy"
+}
+if ($ODerrors -ne "Healthy") {
+    # Create RMM Alert in Syncro for detected issues
+    Rmm-Alert -Category 'OneDrive Issue' -Body "OneDrive Error Detected: $ODerrors"
+
+    # Create a Syncro ticket with detailed error message
+    $ticketSubject = "OneDrive Error Detected"
+    $ticketBody = "OneDrive is reporting the following issue(s): `n$ODerrors"
+    Create-Syncro-Ticket -Subject $ticketSubject -IssueType "Other" -Status "New" -Body $ticketBody
+
+    # Additional Syncro actions for errors
+    # For example, logging activity, sending an email, etc.
+} else {
+    # Log activity in Syncro if OneDrive is healthy
+    Log-Activity -Message "OneDrive check completed: Status Healthy" -EventName "OneDrive Health Check"
 }
