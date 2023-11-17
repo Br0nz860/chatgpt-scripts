@@ -1,0 +1,45 @@
+$Source = @"
+using System;
+using System.Runtime.InteropServices;
+
+namespace murrayju.ProcessExtensions
+{
+    public static class ProcessExtensions
+    {
+        // Win32 Constants, DllImports, Structs, Enums...
+
+        private static bool GetSessionUserToken(ref IntPtr phUserToken)
+        {
+            // Implementation to retrieve a token for the current user session
+            // ...
+        }
+
+        public static bool StartProcessAsCurrentUser(string appPath, string cmdLine = null, string workDir = null, bool visible = true)
+        {
+            // Implementation to start a process as the current user
+            // ...
+        }
+
+        // Additional helper methods and structures...
+    }
+}
+"@
+
+# Add the C# code to the PowerShell session
+Add-Type -ReferencedAssemblies 'System', 'System.Runtime.InteropServices' -TypeDefinition $Source -Language CSharp 
+
+# Function to execute a PowerShell script block as the current user
+function Invoke-AsCurrentUser {
+    param (
+        [ScriptBlock]$ScriptBlock
+    )
+
+    # Convert the script block to a command string
+    $command = $ScriptBlock.ToString()
+
+    # Path to PowerShell executable
+    $psPath = "C:\Windows\System32\WindowsPowershell\v1.0\Powershell.exe"
+
+    # Execute the script block as the current user
+    [murrayju.ProcessExtensions.ProcessExtensions]::StartProcessAsCurrentUser($psPath, "-command $command")
+}
